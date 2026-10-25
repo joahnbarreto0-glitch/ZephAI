@@ -1,2 +1,3 @@
 gradio
 groq
+psycopg[binary]
