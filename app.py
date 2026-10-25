@@ -72,7 +72,6 @@ def construir_mensajes(mensaje, historial):
     ]
 
     for elemento in (historial or [])[-MAX_HISTORY_MESSAGES:]:
-
         if not isinstance(elemento, dict):
             continue
 
@@ -108,8 +107,8 @@ def responder(mensaje, historial):
 
     if not api_key:
         yield (
-            "Falta configurar GROQ_API_KEY en las variables "
-            "de entorno de Render."
+            "Falta configurar GROQ_API_KEY "
+            "en las variables de entorno de Render."
         )
         return
 
@@ -144,7 +143,6 @@ def responder(mensaje, historial):
             yield "No recibí una respuesta. Inténtalo otra vez."
 
     except Exception as error:
-        # Registrar el tipo de error, nunca la clave API
         logger.error(
             "Error Groq: %s",
             type(error).__name__
@@ -152,15 +150,16 @@ def responder(mensaje, historial):
 
         yield (
             "No pude generar la respuesta. Inténtalo de nuevo. "
-            "Si el problema continúa, revisa los registros de "
-            "Render y el estado de tu servicio de Groq."
+            "Si el problema continúa, revisa los registros "
+            "de Render y el estado de tu servicio de Groq."
         )
 
 
 # =====================================================
 # DISENO VISUAL
 # =====================================================
-"""
+
+CSS_ZEPHAI = """
 :root {
     color-scheme: dark;
 }
@@ -373,11 +372,9 @@ app = gr.ChatInterface(
         elem_id="zephai-chatbot",
         height=600,
         layout="bubble",
-        buttons=["copy", "copy_all"],
         render_markdown=True,
-        autoscroll=True,
         placeholder=(
-            "<strong>¿Que hacemos hoy?</strong><br>"
+            "¿Que hacemos hoy?\n\n"
             "Pregunta, aprende, programa o crea algo nuevo."
         )
     ),
@@ -387,8 +384,7 @@ app = gr.ChatInterface(
         placeholder="Escribe un mensaje a ZephAI...",
         container=False,
         lines=1,
-        max_lines=6,
-        scale=7
+        max_lines=6
     ),
 
     title=APP_NAME,
@@ -400,15 +396,8 @@ app = gr.ChatInterface(
         "Dame ideas para un proyecto creativo."
     ],
 
-    run_examples_on_click=False,
-
-    css=CSS_ZEPHAI,
     analytics_enabled=False,
-    autofocus=False,
-    fill_height=True,
     save_history=True,
-    submit_btn=True,
-    stop_btn=True,
     flagging_mode="never"
 )
 
@@ -422,5 +411,6 @@ if __name__ == "__main__":
 
     app.launch(
         server_name="0.0.0.0",
-        server_port=port
+        server_port=port,
+        css=CSS_ZEPHAI
     )
