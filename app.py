@@ -160,8 +160,7 @@ def responder(mensaje, historial):
 # =====================================================
 # DISENO VISUAL
 # =====================================================
-
-CSS_ZEPHAI = """
+"""
 :root {
     color-scheme: dark;
 }
